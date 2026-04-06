@@ -1,0 +1,75 @@
+spec_version: 1
+
+name: dynamic_pricing_env
+version: "1.0.0"
+description: >
+  Dynamic E-Commerce Pricing Optimization environment.
+  An AI agent manages prices for multiple SKUs across a simulated market,
+  balancing revenue, inventory health, and competitor response.
+  Three tasks: single-SKU stable demand (easy), multi-SKU with reactive
+  competitors (medium), and multi-SKU with demand shocks and perishables (hard).
+
+type: environment
+runtime: docker
+
+app:
+  port: 7860
+  health_path: /health
+
+tasks:
+  - name: single_sku_stable
+    difficulty: easy
+    description: "Single SKU, stable demand, no competitors. 20 steps."
+    max_steps: 20
+
+  - name: multi_sku_competitors
+    difficulty: medium
+    description: "5 SKUs, 2 reactive competitor bots. 25 steps."
+    max_steps: 25
+
+  - name: demand_shocks_perishables
+    difficulty: hard
+    description: "10 SKUs incl. perishables, demand shocks, 4 competitors. 30 steps."
+    max_steps: 30
+
+action_space:
+  type: object
+  properties:
+    prices:
+      type: array
+      items:
+        type: number
+        minimum: 0.01
+        maximum: 10000
+      description: "List of prices, one per SKU in observation order"
+
+observation_space:
+  type: object
+  properties:
+    skus:
+      type: array
+      description: "Per-SKU market snapshot"
+    step_number:
+      type: integer
+    episode_revenue:
+      type: number
+    done:
+      type: boolean
+    reward:
+      type: number
+      minimum: 0.0
+      maximum: 1.0
+
+reward:
+  range: [0.0, 1.0]
+  description: >
+    Normalized per-step reward combining:
+    revenue from sales, inventory health bonus,
+    stockout penalty, overstock penalty, expiry loss penalty.
+
+tags:
+  - ecommerce
+  - pricing
+  - inventory
+  - multi-sku
+  - openenv
