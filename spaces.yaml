@@ -1,0 +1,25 @@
+title: Dynamic Pricing RL Environment
+emoji: 🏪
+colorFrom: blue
+colorTo: orange
+sdk: docker
+docker:
+  dockerfile: dynamic_pricing_env/Dockerfile
+app_port: 7860
+header: mini
+permanent_description: "Learn to price SKUs optimally in a simulated e-commerce market. A production-ready RL environment for pricing optimization across 50+ concurrent episodes."
+models:
+  - distilbert-base-uncased
+datasets:
+  - wikitext
+tags:
+  - reinforcement-learning
+  - pricing
+  - e-commerce
+  - optimization
+  - pytorch
+  - fastapi
+  - multiagent
+  - market-simulation
+  - production
+  - hackathon
